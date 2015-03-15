@@ -1,4 +1,4 @@
-local import = require("import").import
+local import = require("import")
 
 local x = function()
 	local e = {}

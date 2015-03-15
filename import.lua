@@ -1,6 +1,5 @@
 --local require = require
-return {
-import = function(env, mod, ...)
+local function import(env, mod, ...)
 	if type(mod) == "string" then
 		mod = require(mod)
 	end
@@ -25,5 +24,6 @@ import = function(env, mod, ...)
 			env[k] = v
 		end
 	end
-end,
-}
+end
+local _M = {import = import}
+return setmetatable(_M, {__call=function(_, ...) return import(...) end})
