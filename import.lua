@@ -29,5 +29,24 @@ local function import(env, mod, ...)
 	end
 	return env
 end
-local _M = {import = import}
-return setmetatable(_M, {__call=function(_, ...) return import(...) end})
+
+local function import2(env, mod_funcs, ...)
+	import(env, unpack(mod_funcs))
+	if ... then
+		return import2(env, ...)
+	end
+	return env
+end
+local _M = {
+import = import,
+import2 = import2,
+}
+
+return setmetatable(_M, {__call=function(_, e, ...)
+	if type(...) == "table" then
+		return import2(e, ...)
+	else
+		return import(e, ...)
+	end
+end
+})
